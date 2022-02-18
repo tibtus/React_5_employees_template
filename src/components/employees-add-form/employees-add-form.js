@@ -9,6 +9,7 @@ class EmployeesAddForm extends Component {
             name: '',
             salary: '',
         }
+        
     }
 
     onValueChange = (e) => {
