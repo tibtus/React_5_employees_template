@@ -43,47 +43,38 @@ class App extends Component {
   }
 
 
-  createItem = ({name}, {salary}) => {
+  addItem = (name, salary) => {
+    const newItem = {
+        name, 
+        salary,
+        increase: false,
+        id: nextId(),
+    }
     this.setState(({data}) => {
-      
-      //1 Cпособ фильтрации
-      const before = [{name: name, salary: salary, increase: false, id: nextId()}];
-      const newArr = [...data, ...before];
+        const newArr = [...data, newItem];
+        return {
+            data: newArr
+        }
+    });
+}
 
-      //console.log(newArr);
-     
-      return {
-        //1 Cпособ фильтрации
-        data: newArr
-        
-      }
-
-    })
-  }
-
-  render() {
+render() {
     return (
-      <div className="app">
-          <AppInfo />
-  
-          <div className="search-panel">
-              <SearchPanel/>
-              <AppFilter/>
-          </div>
-          
-          <EmployeesList 
-          data={this.state.data}
-          onDelete={this.deleteItem}
-          />
-          <EmployeesAddForm
-          onCreate={this.createItem}
-          />
-      </div>
+        <div className="app">
+            <AppInfo />
+
+            <div className="search-panel">
+                <SearchPanel/>
+                <AppFilter/>
+            </div>
+            
+            <EmployeesList 
+                data={this.state.data}
+                onDelete={this.deleteItem}/>
+            <EmployeesAddForm onAdd={this.addItem}/>
+        </div>
     );
-  }
-
-
-
+}
 }
 
 export default App;
