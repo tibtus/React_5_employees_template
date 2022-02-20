@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import nextId from "react-id-generator";
 
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
@@ -13,13 +14,14 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        {name: 'JoKhn Cab', salary: '1800', increase: true, id: 1},
-        {name: 'Peter Pak', salary: '1000', increase: true, id: 2},
-        {name: 'Jonny Deppa', salary: '3000', increase: false, id: 3},
+        {name: 'JoKhn Cab', salary: '1800', increase: true, id: nextId()},
+        {name: 'Peter Pak', salary: '1000', increase: false, id: nextId()},
+        {name: 'Jonny Deppa', salary: '3000', increase: false, id: nextId()},
     
       ]
     }
-    this.maxId = 4;
+    this.maxId = nextId();
+    
   }
 
   deleteItem = (id) => {
@@ -33,9 +35,27 @@ class App extends Component {
       return {
         //1 Cпособ фильтрации
         /* data: newArr */
-
         // 2 Способ фильтрации 
         data: data.filter(item => item.id !==id)
+      }
+
+    })
+  }
+
+
+  createItem = ({name}, {salary}) => {
+    this.setState(({data}) => {
+      
+      //1 Cпособ фильтрации
+      const before = [{name: name, salary: salary, increase: false, id: nextId()}];
+      const newArr = [...data, ...before];
+
+      //console.log(newArr);
+     
+      return {
+        //1 Cпособ фильтрации
+        data: newArr
+        
       }
 
     })
@@ -55,7 +75,9 @@ class App extends Component {
           data={this.state.data}
           onDelete={this.deleteItem}
           />
-          <EmployeesAddForm/>
+          <EmployeesAddForm
+          onCreate={this.createItem}
+          />
       </div>
     );
   }
