@@ -56,25 +56,36 @@ class App extends Component {
             data: newArr
         }
     });
-}
+  }
 
-render() {
-    return (
-        <div className="app">
-            <AppInfo />
+  onToggleIncrease = (id) => {
+    console.log(`Increase this ${id}`);
+  }
 
-            <div className="search-panel">
-                <SearchPanel/>
-                <AppFilter/>
-            </div>
-            
-            <EmployeesList 
-                data={this.state.data}
-                onDelete={this.deleteItem}/>
-            <EmployeesAddForm onAdd={this.addItem}/>
-        </div>
-    );
-}
+  onToggleRise = (id) => {
+    console.log(`Rise this ${id}`);
+  }
+
+  render() {
+      return (
+          <div className="app">
+              <AppInfo />
+
+              <div className="search-panel">
+                  <SearchPanel/>
+                  <AppFilter/>
+              </div>
+              
+              <EmployeesList 
+                  data={this.state.data}
+                  onDelete={this.deleteItem}
+                  onToggleIncrease={this.onToggleIncrease}
+                  onToggleRise={this.onToggleRise}
+                  />
+              <EmployeesAddForm onAdd={this.addItem}/>
+          </div>
+      );
+  }
 }
 
 export default App;
