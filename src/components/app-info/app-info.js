@@ -1,21 +1,15 @@
 import "./app-info.css";
 
-const AppInfo = (props) => {
-    const {data} = props;
-    const number = data.length
+const AppInfo = ({employees, increased}) => {
 
-    let index = data.map(item => item.increase === true);
-    let newArr = index.filter(item => item === true).length;
-
-    console.log(index)
-    console.log(newArr)
-    
+    console.log(employees);
+    console.log(increased);
 
     return (
         <div className="app-info">
             <h1>Учет сотрудников в компании N</h1>
-            <h2>Общее число сотрудников: {number}</h2>
-            <h2>Премию получат: {newArr}</h2>
+            <h2>Общее число сотрудников: {employees}</h2>
+            <h2>Премию получат: {increased}</h2>
         </div>
     )
 }
