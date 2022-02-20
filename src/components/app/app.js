@@ -52,14 +52,29 @@ class App extends Component {
         id: nextId(),
     }
     this.setState(({data}) => {
-        const newArr = [...data, newItem];
-        return {
-            data: newArr
-        }
+        if (newItem.name.length < 3 || newItem.salary === "" || newItem.salary === null || newItem.salary === undefined) {
+            return data
+        } else {
+          const newArr = [...data, newItem];
+          return {
+              data: newArr
+          }
+       }
     });
   }
 
-  onToggleIncrease = (id) => {
+  onToggleProp = (id, prop) => {
+    this.setState(({data}) => ({
+      data: data.map(item => {
+        if(item.id === id) {
+          return {...item, [prop]: !item[prop]}
+        }
+        return item;
+      })
+    })) 
+  } 
+
+ // onToggleIncrease = (id) => {
 
     // Способ №1
 /*     this.setState(({data}) => {
@@ -75,7 +90,7 @@ class App extends Component {
         }
     }) */
     // Способ №2
-    this.setState(({data}) => ({
+/*     this.setState(({data}) => ({
       data: data.map(item => {
         if(item.id === id) {
           return {...item, increase: !item.increase}
@@ -84,11 +99,18 @@ class App extends Component {
       })
     })) 
 
-  }
+  } */
 
-  onToggleRise = (id) => {
-    console.log(`Rise this ${id}`);
-  }
+/*   onToggleRise = (id) => {
+    this.setState(({data}) => ({
+      data: data.map(item => {
+        if(item.id === id) {
+          return {...item, rise: !item.rise}
+        }
+        return item;
+      })
+    })) 
+  } */
 
 
 
@@ -111,8 +133,9 @@ class App extends Component {
               <EmployeesList 
                   data={this.state.data}
                   onDelete={this.deleteItem}
-                  onToggleIncrease={this.onToggleIncrease}
-                  onToggleRise={this.onToggleRise}
+                  onToggleProp={this.onToggleProp}
+                  //onToggleIncrease={this.onToggleIncrease}
+                  //onToggleRise={this.onToggleRise}
                   />
               <EmployeesAddForm onAdd={this.addItem}/>
           </div>
