@@ -16,10 +16,11 @@ class App extends Component {
       data: [
         {name: 'JoKhn Cab', salary: '1800', increase: false, rise: true, id: nextId()},
         {name: 'Peter Pak', salary: '1000', increase: true, rise: false, id: nextId()},
-        {name: 'Jonny Deppa', salary: '3000', increase: false, rise: false, id: nextId()},
+        {name: 'Jonny Deppa', salary: '200', increase: false, rise: false, id: nextId()},
     
       ],
-      term: ''
+      term: '',
+      filter: 'all',
 
 
     }
@@ -130,12 +131,47 @@ class App extends Component {
   }
 
 
+  filterRise = (items) => {
+    return items.filter(item => {
+       return item.rise
+       
+    })
+  }
+
+  filterCash = (items) => {
+    return items.filter(item => {
+      return item.salary >= 1000
+            
+    })
+  }
+
+  onUpdateFilter = (filter) => {
+    this.setState({filter})
+  }
+
+  onUpdateTab = (all, rise, cash) => {
+    if (this.state.filter === 'all') {
+      return all
+    } else if (this.state.filter === 'rise') {
+      return rise
+    } else if (this.state.filter === 'salary') {
+      return cash
+    }
+  }
+
+
   render() {
       const {data, term} = this.state;
       const employees = this.state.data.length;
       const increased = this.state.data.filter(item => item.increase).length;
       const visibleData = this.searchEmp(data, term);
+      const visibleRise = this.filterRise(data);
+      const visibleCash = this.filterCash(data);
+      const visibleFilter = this.onUpdateTab(visibleData, visibleRise, visibleCash);
 
+    
+
+    
       return (
           <div className="app">
               <AppInfo 
@@ -147,11 +183,13 @@ class App extends Component {
                   <SearchPanel
                   onUpdateSearch={this.onUpdateSearch}
                   />
-                  <AppFilter/>
+                  <AppFilter
+                  onUpdateFilter={this.onUpdateFilter}
+                  />
               </div>
               
               <EmployeesList 
-                  data={visibleData}
+                  data={visibleFilter}
                   onDelete={this.deleteItem}
                   onToggleProp={this.onToggleProp}
                   //onToggleIncrease={this.onToggleIncrease}
