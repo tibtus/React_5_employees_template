@@ -1,55 +1,30 @@
-import React, { Component } from 'react';
-
 import "./app-filter.css";
 
-class AppFilter extends Component {
-    constructor(props) {
-        super(props) 
-        this.state = {
-            filter: 'all'
-        }
-    }
+const AppFilter = (props) => {
+    const buttonsData = [
+        {name: 'all', label: 'Все сотрудники'},
+        {name: 'rise', label: 'На повышение'},
+        {name: 'moreThen1000', label: 'З/П больше 1000$'}
+    ];
 
-    onUpdateFilterLocal = (e) => {
-        const filterUp = e.target.value;
-        this.setState({filter : filterUp});     // установка уже локального состояния
-        this.props.onUpdateFilter(filterUp);   // передаем локальрное состояние на верх
-      
-    }
-
-    render() {
-        const activeClass = "btn btn-light";
-        const deactiveClass = "btn btn-outline-light";
-        const status = this.state.filter;
-
+    const buttons = buttonsData.map(({name, label}) => {
+        const active = props.filter === name;
+        const clazz = active ? 'btn-light' : 'btn-outline-light';
         return (
-            <div className="btn-group">
-                <button type="button"
-                        className={status === 'all' ? activeClass : deactiveClass}  
-                        value='all'
-                        onClick={this.onUpdateFilterLocal}
-                        >
-                        Все сотрудники
-                </button>
-                <button type="button"
-                        className={status === 'rise' ? activeClass : deactiveClass}   
-                        value='rise'
-                        onClick={this.onUpdateFilterLocal}
-                        >
-                        На повышение
-                </button>
-                <button type="button"
-                        className={status === 'salary' ? activeClass : deactiveClass}   
-                        value='salary'
-                        onClick={this.onUpdateFilterLocal}
-                        >
-                        З/П больше 1000$
-                </button>
-            </div>
+            <button type="button"
+                    className={`btn ${clazz}`}
+                    key={name}
+                    onClick={() => props.onFilterSelect(name)}>
+                    {label}
+            </button>
         )
+    })
 
-    }
-
+    return (
+        <div className="btn-group">
+            {buttons}
+        </div>
+    )
 }
 
 export default AppFilter;

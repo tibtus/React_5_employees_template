@@ -118,7 +118,7 @@ class App extends Component {
 
   searchEmp = (items, term) => {
     if (term.length === 0) {
-      return items;
+        return items;
     }
 
     return items.filter(item => {
@@ -127,47 +127,30 @@ class App extends Component {
   }
 
   onUpdateSearch = (term) => {
-    this.setState({term : term});   // установка уже глобального  состояния в app
+      this.setState({term});
   }
 
-
-  filterRise = (items) => {
-    return items.filter(item => {
-       return item.rise
-       
-    })
+  filterPost = (items, filter) => {
+      switch (filter) {
+          case 'rise':
+              return items.filter(item => item.rise);
+          case 'moreThen1000':
+              return items.filter(item => item.salary >= 1000);
+          default:
+              return items
+      }
   }
 
-  filterCash = (items) => {
-    return items.filter(item => {
-      return item.salary >= 1000
-            
-    })
-  }
-
-  onUpdateFilter = (filter) => {
-    this.setState({filter})
-  }
-
-  onUpdateTab = (all, rise, cash) => {
-    if (this.state.filter === 'all') {
-      return all
-    } else if (this.state.filter === 'rise') {
-      return rise
-    } else if (this.state.filter === 'salary') {
-      return cash
-    }
+  onFilterSelect = (filter) => {
+      this.setState({filter});
   }
 
 
   render() {
-      const {data, term} = this.state;
-      const employees = this.state.data.length;
-      const increased = this.state.data.filter(item => item.increase).length;
-      const visibleData = this.searchEmp(data, term);
-      const visibleRise = this.filterRise(data);
-      const visibleCash = this.filterCash(data);
-      const visibleFilter = this.onUpdateTab(visibleData, visibleRise, visibleCash);
+    const {data, term, filter} = this.state;
+    const employees = this.state.data.length;
+    const increased = this.state.data.filter(item => item.increase).length;
+    const visibleData = this.filterPost(this.searchEmp(data, term), filter);
 
     
 
@@ -184,12 +167,13 @@ class App extends Component {
                   onUpdateSearch={this.onUpdateSearch}
                   />
                   <AppFilter
-                  onUpdateFilter={this.onUpdateFilter}
+                 filter={filter} 
+                 onFilterSelect={this.onFilterSelect}
                   />
               </div>
               
               <EmployeesList 
-                  data={visibleFilter}
+                  data={visibleData}
                   onDelete={this.deleteItem}
                   onToggleProp={this.onToggleProp}
                   //onToggleIncrease={this.onToggleIncrease}
